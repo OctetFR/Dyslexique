@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lecture facile</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+  /* OpenDyslexic : le navigateur essaie chaque source dans l'ordre jusqu'à en trouver une qui fonctionne */
+  @font-face{
+    font-family:'OpenDyslexic'; font-weight:400; font-style:normal; font-display:swap;
+    src: local('OpenDyslexic Regular'), local('OpenDyslexic-Regular'), local('OpenDyslexic'),
+         url('fonts/OpenDyslexic-Regular.woff2') format('woff2'),
+         url('fonts/OpenDyslexic-Regular.woff') format('woff'),
+         url('fonts/OpenDyslexic-Regular.otf') format('opentype'),
+         url('https://cdn.jsdelivr.net/gh/antijingoist/opendyslexic@master/compiled/OpenDyslexic-Regular.woff') format('woff'),
+         url('https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/woff/OpenDyslexic-Regular.woff') format('woff'),
+         url('https://cdn.jsdelivr.net/npm/@fontsource/opendyslexic/files/opendyslexic-latin-400-normal.woff2') format('woff2');
+  }
+  @font-face{
+    font-family:'OpenDyslexic'; font-weight:700; font-style:normal; font-display:swap;
+    src: local('OpenDyslexic Bold'), local('OpenDyslexic-Bold'),
+         url('fonts/OpenDyslexic-Bold.woff2') format('woff2'),
+         url('fonts/OpenDyslexic-Bold.woff') format('woff'),
+         url('fonts/OpenDyslexic-Bold.otf') format('opentype'),
+         url('https://cdn.jsdelivr.net/gh/antijingoist/opendyslexic@master/compiled/OpenDyslexic-Bold.woff') format('woff'),
+         url('https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/woff/OpenDyslexic-Bold.woff') format('woff'),
+         url('https://cdn.jsdelivr.net/npm/@fontsource/opendyslexic/files/opendyslexic-latin-700-normal.woff2') format('woff2');
+  }
+</style>
+<style>
+  :root{
+    --font:'OpenDyslexic','Comic Sans MS',sans-serif;
+    --size:24px; --lh:1.9; --ls:0.05em; --ws:0.25em; --width:60ch;
+    --fg:#2b2b2b; --bg:#faf3e0;
+    --c1:#1f5fbf; --c2:#c0392b; --cv:#d35400;
+    --cb:#1f5fbf; --cd:#c0392b; --cp:#1e8449; --cq:#8e44ad;
+    --ui:#ffffff; --uifg:#222; --accent:#2e6fdb;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Lexend',Verdana,sans-serif;background:#eef1f6;color:var(--uifg);font-size:17px}
+  header{background:var(--accent);color:#fff;padding:14px 20px}
+  header h1{margin:0;font-size:1.5rem}
+  header{padding-left:150px}
+  .wrap{padding:16px;max-width:1500px;margin:auto;transition:margin-left .25s}
+  #menu{position:fixed;top:0;left:0;bottom:0;width:360px;max-width:92vw;background:#e6ebf4;z-index:20;overflow-y:auto;overscroll-behavior:contain;padding:12px 12px 40px;transform:translateX(-105%);transition:transform .25s;box-shadow:2px 0 12px #0004}
+  body.menu-open #menu{transform:none}
+  #menuHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  #menuHead strong{font-size:1.2rem}
+  #menuBtn{position:fixed;top:10px;left:10px;z-index:30;box-shadow:0 2px 6px #0004;font-weight:700}
+  body.menu-open #menuBtn{display:none}
+  @media(min-width:1000px){ body.menu-open .wrap{margin-left:360px;max-width:none} body.menu-open header{padding-left:380px} }
+  #fontwarn{display:none;background:#fff3cd;border:2px solid #e0b800;border-radius:10px;padding:10px;margin-top:10px;font-size:.9rem}
+  .panel{background:var(--ui);border-radius:14px;padding:16px;box-shadow:0 1px 4px #0002}
+  .panel h2{margin:0 0 10px;font-size:1.1rem}
+  label{display:block;margin:10px 0 4px;font-weight:700;font-size:.95rem}
+  input[type=text],input[type=url],select,textarea{width:100%;padding:10px;font-size:1rem;border:2px solid #b8c2d6;border-radius:10px;font-family:inherit}
+  input[type=range]{width:100%}
+  input[type=color]{width:56px;height:36px;border:none;background:none;padding:0}
+  button,.btn{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px 16px;font-size:1rem;font-family:inherit;cursor:pointer;display:inline-block;margin:4px 4px 4px 0}
+  button.sec,.btn.sec{background:#e3e9f5;color:#1d2a44}
+  button:focus-visible,input:focus-visible,select:focus-visible,.btn:focus-visible{outline:3px solid #ffb300;outline-offset:2px}
+  .row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .check{display:flex;align-items:center;gap:10px;margin:8px 0;font-weight:400}
+  .check input{width:22px;height:22px}
+  .themes button{border:2px solid #0004;font-weight:700}
+  details{margin-top:12px;border-top:1px solid #ddd;padding-top:8px}
+  summary{cursor:pointer;font-weight:700;padding:6px 0}
+  #status{margin-top:8px;font-size:.95rem;min-height:1.3em}
+  .err{color:#b00020}
+  .hint{font-size:.85rem;opacity:.8;margin-top:6px}
+  #reader{background:var(--bg);color:var(--fg);border-radius:14px;padding:28px 24px;min-height:60vh;box-shadow:0 1px 4px #0002;position:relative}
+  #text{font-family:var(--font);font-size:var(--size);line-height:var(--lh);letter-spacing:var(--ls);word-spacing:var(--ws);max-width:var(--width);margin:0 auto;text-align:left}
+  #text h1,#text h2,#text h3,#text h4{font-weight:700;line-height:1.4;margin:1.4em 0 .5em}
+  #text h1{font-size:1.5em}#text h2{font-size:1.3em}#text h3,#text h4{font-size:1.15em}
+  #text p{margin:0 0 1.1em}
+  #text .li{margin:0 0 .6em;padding-left:1em;text-indent:-1em}
+  #text .pic{display:block;max-width:100%;height:auto;margin:1em auto;border-radius:6px;break-inside:avoid}
+  #text hr{border:none;border-top:2px dashed currentColor;opacity:.3;margin:1.8em 0}
+  #text .tw{overflow-x:auto;margin:1em 0}
+  #text table{border-collapse:collapse;width:100%;font-size:.8em;line-height:1.5}
+  #text td{border:1px solid #8886;padding:6px 8px;vertical-align:top}
+  .s0{color:var(--c1)}.s1{color:var(--c2)}
+  .w0{color:var(--c1)}.w1{color:var(--c2)}
+  .v{color:var(--cv);font-weight:700}
+  .lb{color:var(--cb);font-weight:700}.ld{color:var(--cd);font-weight:700}
+  .lp{color:var(--cp);font-weight:700}.lq{color:var(--cq);font-weight:700}
+  #ruler{position:fixed;left:0;right:0;height:3.2em;background:#ffe60055;border-top:2px solid #e0b800;border-bottom:2px solid #e0b800;pointer-events:none;display:none;z-index:5}
+  .empty{opacity:.7;text-align:center;font-family:var(--font)}
+  @media print{
+    body{background:#fff}header,.panel,#ruler,#menu,#menuBtn{display:none!important}
+    .wrap{display:block;padding:0;margin:0!important;max-width:none!important}
+    #reader{box-shadow:none;padding:0;background:var(--bg);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    #text *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+<header><h1>📖 Lecture facile</h1></header>
+
+<button id="menuBtn" aria-controls="menu" aria-expanded="false">☰ Menu</button>
+
+<div class="wrap">
+  <aside id="menu" aria-label="Menu des réglages">
+    <div id="menuHead"><strong>⚙️ Menu</strong><button id="menuClose" class="sec">✕ Fermer</button></div>
+    <div id="fontwarn">⚠️ La police OpenDyslexic n'a pas pu être chargée. Télécharge <b>OpenDyslexic-Regular.woff</b> (et <b>OpenDyslexic-Bold.woff</b>) et place-les dans un dossier <b>fonts</b> à côté de <b>index.html</b> sur GitHub.</div>
+    <div class="panel">
+      <h2>1. Que veux-tu lire ?</h2>
+      <label for="url">Colle un lien (adresse d'un site)</label>
+      <input type="url" id="url" placeholder="https://fr.wikipedia.org/wiki/Chat">
+      <button id="goUrl">Afficher la page</button>
+
+      <label for="file">… ou choisis un fichier (PDF, Word, texte, HTML)</label>
+      <input type="file" id="file" accept=".pdf,.docx,.txt,.md,.html,.htm" style="display:none">
+      <label class="btn" for="file" tabindex="0" id="fileBtn" style="font-weight:400">📂 Choisir un fichier</label>
+      <div class="hint">Les images, titres, listes et tableaux sont conservés.</div>
+
+      <details>
+        <summary>… ou colle du texte</summary>
+        <textarea id="paste" rows="5" placeholder="Colle ton texte ici"></textarea>
+        <button id="goPaste">Afficher le texte</button>
+      </details>
+      <div id="status" role="status"></div>
+    </div>
+
+    <div class="panel" style="margin-top:16px">
+      <h2>2. Réglages</h2>
+      <div class="themes">
+        <label>Couleurs rapides</label>
+        <button data-fg="#2b2b2b" data-bg="#faf3e0" style="background:#faf3e0;color:#2b2b2b">Crème</button>
+        <button data-fg="#1a1a1a" data-bg="#fff6a8" style="background:#fff6a8;color:#1a1a1a">Jaune</button>
+        <button data-fg="#13294b" data-bg="#dbeafe" style="background:#dbeafe;color:#13294b">Bleu</button>
+        <button data-fg="#f2f2f2" data-bg="#1e1e1e" style="background:#1e1e1e;color:#f2f2f2">Sombre</button>
+        <button data-fg="#000000" data-bg="#ffffff" style="background:#fff;color:#000">Blanc</button>
+      </div>
+
+      <label for="font">Police</label>
+      <select id="font" data-k="font">
+        <option value="'OpenDyslexic','Comic Sans MS',sans-serif">OpenDyslexic</option>
+        <option value="'Lexend',Verdana,sans-serif">Lexend</option>
+        <option value="'Atkinson Hyperlegible',Verdana,sans-serif">Atkinson Hyperlegible</option>
+        <option value="Verdana,Tahoma,sans-serif">Verdana</option>
+      </select>
+
+      <label>Taille du texte : <span id="o_size"></span></label>
+      <input type="range" data-k="size" min="16" max="56" step="1">
+      <label>Espace entre les lignes : <span id="o_lh"></span></label>
+      <input type="range" data-k="lh" min="1.2" max="3" step="0.1">
+      <label>Espace entre les lettres : <span id="o_ls"></span></label>
+      <input type="range" data-k="ls" min="0" max="0.3" step="0.01">
+      <label>Espace entre les mots : <span id="o_ws"></span></label>
+      <input type="range" data-k="ws" min="0" max="1" step="0.05">
+      <label>Largeur de la colonne : <span id="o_width"></span></label>
+      <input type="range" data-k="width" min="30" max="100" step="5">
+
+      <div class="row" style="margin-top:10px">
+        <div><label>Couleur du texte</label><input type="color" data-k="fg"></div>
+        <div><label>Couleur du fond</label><input type="color" data-k="bg"></div>
+      </div>
+
+      <details open>
+        <summary>🎨 Mettre en couleur</summary>
+        <label class="check"><input type="checkbox" data-k="syl"> Découper en syllabes (couleurs en alternance)</label>
+        <label class="check"><input type="checkbox" data-k="alt"> Mots en couleurs alternées</label>
+        <label class="check"><input type="checkbox" data-k="vow"> Voyelles en couleur</label>
+        <label class="check"><input type="checkbox" data-k="bdpq"> Lettres b, d, p, q en couleur</label>
+        <div class="row">
+          <div><label>Couleur 1</label><input type="color" data-k="c1"></div>
+          <div><label>Couleur 2</label><input type="color" data-k="c2"></div>
+          <div><label>Voyelles</label><input type="color" data-k="cv"></div>
+        </div>
+        <div class="row">
+          <div><label>b</label><input type="color" data-k="cb"></div>
+          <div><label>d</label><input type="color" data-k="cd"></div>
+          <div><label>p</label><input type="color" data-k="cp"></div>
+          <div><label>q</label><input type="color" data-k="cq"></div>
+        </div>
+      </details>
+
+      <details>
+        <summary>🛠️ Aides</summary>
+        <label class="check"><input type="checkbox" data-k="ruler"> Règle de lecture (suit la souris / le doigt)</label>
+        <button id="speak" class="sec">🔊 Lire à voix haute</button>
+        <button id="stop" class="sec">⏹️ Arrêter</button>
+      </details>
+    </div>
+
+    <div class="panel" style="margin-top:16px">
+      <h2>3. Garder le résultat</h2>
+      <button id="pdf">⬇️ Télécharger en PDF</button>
+      <div class="hint">Dans la fenêtre qui s'ouvre, choisis « Enregistrer au format PDF ». Coche « Graphiques d'arrière-plan » pour garder le fond coloré.</div>
+    </div>
+  </aside>
+
+  <main id="reader">
+    <div id="text"><p class="empty">Colle un lien ou choisis un fichier pour commencer. ✨</p></div>
+  </main>
+</div>
+<div id="ruler"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script>
+/* ---------- Réglages ---------- */
+const DEFAULTS = {
+  font:"'OpenDyslexic','Comic Sans MS',sans-serif", size:24, lh:1.9, ls:0.05, ws:0.25, width:60,
+  fg:"#2b2b2b", bg:"#faf3e0", c1:"#1f5fbf", c2:"#c0392b", cv:"#d35400",
+  cb:"#1f5fbf", cd:"#c0392b", cp:"#1e8449", cq:"#8e44ad",
+  syl:false, alt:false, vow:false, bdpq:false, ruler:false
+};
+const RENDER_KEYS = ['syl','alt','vow','bdpq'];
+let S = {...DEFAULTS};
+try { Object.assign(S, JSON.parse(localStorage.getItem('lf_settings')||'{}')); } catch(e){}
+if (/OpenDyslexic/.test(S.font)) S.font = DEFAULTS.font;
+
+/* Blocs du document :
+   {t:'h1'|'h2'|'h3'|'h4'|'p'|'li', runs:[{t,b,i}], align?}
+   {t:'img', src, alt} | {t:'table', rows:[[texte]]} | {t:'hr'} */
+let blocks = [];
+
+const $ = s => document.querySelector(s);
+const root = document.documentElement.style;
+
+function applyStyle(){
+  root.setProperty('--font', S.font);
+  root.setProperty('--size', S.size+'px');
+  root.setProperty('--lh', S.lh);
+  root.setProperty('--ls', S.ls+'em');
+  root.setProperty('--ws', S.ws+'em');
+  root.setProperty('--width', S.width+'ch');
+  ['fg','bg','c1','c2','cv','cb','cd','cp','cq'].forEach(k=>root.setProperty('--'+k,S[k]));
+  $('#o_size').textContent = S.size+' px';
+  $('#o_lh').textContent = S.lh;
+  $('#o_ls').textContent = S.ls;
+  $('#o_ws').textContent = S.ws;
+  $('#o_width').textContent = S.width;
+  $('#ruler').style.display = S.ruler ? 'block' : 'none';
+  try { localStorage.setItem('lf_settings', JSON.stringify(S)); } catch(e){}
+}
+
+document.querySelectorAll('[data-k]').forEach(el=>{
+  const k = el.dataset.k;
+  if (el.type==='checkbox') el.checked = !!S[k]; else el.value = S[k];
+  el.addEventListener('input', ()=>{
+    S[k] = el.type==='checkbox' ? el.checked :
+           el.type==='range' ? parseFloat(el.value) : el.value;
+    applyStyle();
+    if (RENDER_KEYS.includes(k)) render();
+  });
+});
+document.querySelectorAll('.themes button').forEach(b=>b.addEventListener('click',()=>{
+  S.fg=b.dataset.fg; S.bg=b.dataset.bg;
+  document.querySelector('[data-k=fg]').value=S.fg;
+  document.querySelector('[data-k=bg]').value=S.bg;
+  applyStyle();
+}));
+
+/* ---------- Découpage en syllabes (approximation pour le français) ---------- */
+const VOW = 'aeiouyàâäéèêëîïôöùûüœæ';
+const PAIRS = ['ch','ph','th','gn','sh'];
+function syllabify(w){
+  const lw = w.toLowerCase(), n = lw.length;
+  const isV = i => VOW.includes(lw[i]) && !(lw[i]==='u' && lw[i-1]==='q');
+  const groups = [];
+  for (let i=0;i<n;){
+    if (isV(i)){ let j=i; while(j+1<n && isV(j+1)) j++; groups.push([i,j]); i=j+1; } else i++;
+  }
+  if (groups.length<=1) return [w];
+  const cuts = [];
+  for (let k=0;k<groups.length-1;k++){
+    const a = groups[k][1]+1, b = groups[k+1][0];
+    const len = b-a;
+    let cut;
+    if (len<=1) cut = a;
+    else {
+      cut = b-1;
+      const pair = lw.slice(b-2,b);
+      if (PAIRS.includes(pair) || (b-2>=a && 'lr'.includes(lw[b-1]) && 'bcdfgpt'.includes(lw[b-2]))) cut = b-2;
+      if (cut<a) cut=a;
+    }
+    cuts.push(cut);
+  }
+  const out=[]; let prev=0;
+  cuts.forEach(c=>{ if(c>prev){ out.push(w.slice(prev,c)); prev=c; } });
+  out.push(w.slice(prev));
+  return out;
+}
+
+/* ---------- Affichage ---------- */
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function letters(str){
+  if (!S.vow && !S.bdpq) return esc(str);
+  let o='';
+  for (const ch of str){
+    const l = ch.toLowerCase();
+    let cls='';
+    if (S.bdpq && 'bdpq'.includes(l)) cls='l'+l;
+    else if (S.vow && VOW.includes(l)) cls='v';
+    o += cls ? `<span class="${cls}">${esc(ch)}</span>` : esc(ch);
+  }
+  return o;
+}
+
+function renderText(text, c){
+  return text.replace(/\p{L}+|[^\p{L}]+/gu, tok=>{
+    if (!/\p{L}/u.test(tok)) return esc(tok);
+    let html;
+    if (S.syl) html = syllabify(tok).map((s,i)=>`<span class="s${i%2}">${letters(s)}</span>`).join('');
+    else html = letters(tok);
+    if (S.alt) html = `<span class="w${c.wi%2}">${html}</span>`;
+    c.wi++;
+    return html;
+  });
+}
+function renderRuns(runs){
+  const c = {wi:0};
+  return runs.map(r=>{
+    let h = renderText(r.t, c);
+    if (r.b) h = `<b>${h}</b>`;
+    if (r.i) h = `<i>${h}</i>`;
+    return h;
+  }).join('');
+}
+
+function render(){
+  const box = $('#text');
+  if (!blocks.length){ box.innerHTML='<p class="empty">Colle un lien ou choisis un fichier pour commencer. ✨</p>'; return; }
+  box.innerHTML = blocks.map(b=>{
+    if (b.t==='img') return `<img class="pic" src="${esc(b.src)}" alt="${esc(b.alt||'')}" referrerpolicy="no-referrer" loading="lazy">`;
+    if (b.t==='hr') return '<hr>';
+    if (b.t==='table') return `<div class="tw"><table>${b.rows.map(r=>`<tr>${r.map(c=>`<td>${renderText(c,{wi:0})}</td>`).join('')}</tr>`).join('')}</table></div>`;
+    const inner = renderRuns(b.runs);
+    const st = b.align ? ` style="text-align:${b.align}"` : '';
+    if (b.t==='li') return `<div class="li"${st}>• ${inner}</div>`;
+    return `<${b.t}${st}>${inner}</${b.t}>`;
+  }).join('');
+}
+
+function blockText(b){
+  if (b.runs) return b.runs.map(r=>r.t).join('');
+  if (b.rows) return b.rows.map(r=>r.join(', ')).join('. ');
+  return '';
+}
+const blk = (t,text,extra)=>({t, runs:[{t:text}], ...extra});
+
+function normBlock(b){
+  if (b.t==='img' || b.t==='hr') return b;
+  if (b.t==='table') return b.rows.length ? b : null;
+  let runs = (b.runs||[]).map(r=>({...r, t:r.t.replace(/\[\d+\]/g,'').replace(/\s+/g,' ')}));
+  if (runs.length){
+    runs[0].t = runs[0].t.replace(/^\s+/,'');
+    runs[runs.length-1].t = runs[runs.length-1].t.replace(/\s+$/,'');
+  }
+  runs = runs.filter(r=>r.t);
+  return runs.length ? {...b, runs} : null;
+}
+
+function setStatus(msg, err){ const s=$('#status'); s.textContent=msg; s.className=err?'err':''; }
+function setBlocks(arr){
+  blocks = arr.map(normBlock).filter(Boolean);
+  render();
+  if (!blocks.length) setStatus("Je n'ai trouvé aucun texte à afficher.", true);
+  else { setStatus('Prêt ! ✅'); if (innerWidth<1000) setMenu(false); $('#reader').scrollIntoView({behavior:'smooth'}); }
+}
+
+/* ---------- Extraction : HTML (pages web et Word) ---------- */
+function runsOf(node, st, out){
+  st = st || {b:false,i:false}; out = out || [];
+  node.childNodes.forEach(n=>{
+    if (n.nodeType===3) out.push({t:n.textContent, b:st.b, i:st.i});
+    else if (n.nodeType===1){
+      const tag = n.tagName.toLowerCase();
+      if (['script','style','img','ul','ol','table'].includes(tag)) return;
+      if (tag==='br'){ out.push({t:' '}); return; }
+      runsOf(n, {b:st.b||tag==='strong'||tag==='b', i:st.i||tag==='em'||tag==='i'}, out);
+    }
+  });
+  return out;
+}
+
+function htmlToBlocks(html, base, withTitle){
+  const doc = new DOMParser().parseFromString(html,'text/html');
+  doc.querySelectorAll('script,style,nav,footer,header,aside,form,iframe,noscript,svg,button,[role=navigation],.navbox,sup.reference,.mw-editsection,.noprint').forEach(e=>e.remove());
+  const main = doc.querySelector('article') || doc.querySelector('main') || doc.querySelector('#mw-content-text') || doc.body;
+  const out = [];
+  const title = doc.querySelector('title');
+  if (withTitle && title && title.textContent.trim()) out.push(blk('h1', title.textContent));
+
+  const pushImg = el=>{
+    let src = el.getAttribute('src') || el.getAttribute('data-src') || '';
+    if (!src){ const ss = el.getAttribute('srcset'); if (ss) src = ss.split(',')[0].trim().split(' ')[0]; }
+    if (!src) return;
+    const w = parseInt(el.getAttribute('width')||'999'), h = parseInt(el.getAttribute('height')||'999');
+    if (w<50 || h<50) return;
+    if (!src.startsWith('data:')){
+      try { src = new URL(src, base || location.href).href; } catch(e){ return; }
+    }
+    out.push({t:'img', src, alt: el.getAttribute('alt')||''});
+  };
+
+  main.querySelectorAll('h1,h2,h3,h4,p,li,img,table').forEach(el=>{
+    const tag = el.tagName.toLowerCase();
+    const tb = el.closest('table');
+    if (tb && tb!==el && main.contains(tb)) return;
+    if (tag==='img'){ pushImg(el); return; }
+    if (tag==='table'){
+      el.querySelectorAll('img').forEach(pushImg);
+      const rows = [...el.querySelectorAll('tr')]
+        .map(tr=>[...tr.children].filter(c=>/^t[dh]$/i.test(c.tagName)).map(c=>c.textContent.replace(/\s+/g,' ').trim()))
+        .filter(r=>r.some(c=>c));
+      if (rows.length) out.push({t:'table', rows});
+      return;
+    }
+    if (tag==='li' && el.querySelector('p')) return;
+    const runs = runsOf(el);
+    if (!runs.map(r=>r.t).join('').trim()) return;
+    out.push({t: (tag==='h1'&&withTitle)?'h2':tag, runs});
+  });
+  return out;
+}
+
+const PROXIES = [
+  u => 'https://api.allorigins.win/raw?url='+encodeURIComponent(u),
+  u => 'https://corsproxy.io/?'+encodeURIComponent(u),
+  u => 'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u)
+];
+async function loadUrl(){
+  let u = $('#url').value.trim();
+  if (!u) return setStatus("Colle d'abord un lien.", true);
+  if (!/^https?:\/\//i.test(u)) u = 'https://'+u;
+  setStatus('Chargement…');
+  for (const p of PROXIES){
+    try{
+      const r = await fetch(p(u));
+      if (!r.ok) continue;
+      const html = await r.text();
+      const b = htmlToBlocks(html, u, true);
+      if (b.length>1){ setBlocks(b); return; }
+    }catch(e){}
+  }
+  setStatus("Impossible de charger cette page (certains sites refusent). Essaie un autre lien, ou copie-colle le texte.", true);
+}
+
+/* ---------- Extraction : PDF (texte + images + titres) ---------- */
+function getObj(page, name){
+  return new Promise(res=>{
+    const t = setTimeout(()=>res(null), 4000);
+    try{
+      const store = name.startsWith('g_') ? page.commonObjs : page.objs;
+      store.get(name, o=>{ clearTimeout(t); res(o); });
+    }catch(e){ clearTimeout(t); res(null); }
+  });
+}
+
+function imageToDataURL(o){
+  if (!o) return null;
+  try{
+    let src;
+    if (o.bitmap) src = o.bitmap;
+    else if (o.data){
+      const w=o.width, h=o.height;
+      src = document.createElement('canvas'); src.width=w; src.height=h;
+      const ctx = src.getContext('2d');
+      const id = ctx.createImageData(w,h), d=id.data, s=o.data;
+      if (o.kind===3) d.set(s.subarray ? s.subarray(0,d.length) : s);
+      else if (o.kind===2){ for(let i=0,j=0;i<w*h;i++){ d[j++]=s[i*3]; d[j++]=s[i*3+1]; d[j++]=s[i*3+2]; d[j++]=255; } }
+      else if (o.kind===1){
+        const rb=(w+7)>>3;
+        for(let y=0;y<h;y++) for(let x=0;x<w;x++){
+          const v=((s[y*rb+(x>>3)]>>(7-(x&7)))&1)?255:0, j=(y*w+x)*4;
+          d[j]=d[j+1]=d[j+2]=v; d[j+3]=255;
+        }
+      } else return null;
+      ctx.putImageData(id,0,0);
+    } else return null;
+    const sw = src.width, sh = src.height;
+    const sc = Math.min(1, 1000/sw);
+    const out = document.createElement('canvas');
+    out.width = Math.max(1,Math.round(sw*sc)); out.height = Math.max(1,Math.round(sh*sc));
+    const c2 = out.getContext('2d');
+    c2.fillStyle = '#fff'; c2.fillRect(0,0,out.width,out.height);
+    c2.drawImage(src,0,0,out.width,out.height);
+    return out.toDataURL('image/jpeg',0.85);
+  }catch(e){ return null; }
+}
+
+const mul = (m,n)=>[
+  m[0]*n[0]+m[1]*n[2], m[0]*n[1]+m[1]*n[3],
+  m[2]*n[0]+m[3]*n[2], m[2]*n[1]+m[3]*n[3],
+  m[4]*n[0]+m[5]*n[2]+n[4], m[4]*n[1]+m[5]*n[3]+n[5]];
+
+async function pdfToBlocks(buf){
+  /* Le script du worker est déjà chargé dans la page (balise <script> plus haut) :
+     si le navigateur refuse de lancer un worker séparé, pdf.js s'en sert directement, sans rien à télécharger. */
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const pdf = await pdfjsLib.getDocument({data:buf, verbosity:0}).promise;
+  const OPS = pdfjsLib.OPS;
+  const pages = [];
+  const sizeCount = {};
+  let imgCount = 0;
+
+  /* Passe 1 : lire chaque page (texte + images) */
+  for (let p=1;p<=pdf.numPages;p++){
+    setStatus(`Lecture du PDF… page ${p}/${pdf.numPages}`);
+    const page = await pdf.getPage(p);
+    const W = page.getViewport({scale:1}).width;
+    const ops = await page.getOperatorList();
+
+    // Images avec leur position
+    const imgs = [];
+    let ctm = [1,0,0,1,0,0]; const stack = [];
+    for (let i=0;i<ops.fnArray.length;i++){
+      const fn = ops.fnArray[i], a = ops.argsArray[i];
+      if (fn===OPS.save) stack.push(ctm.slice());
+      else if (fn===OPS.restore) ctm = stack.pop() || [1,0,0,1,0,0];
+      else if (fn===OPS.transform) ctm = mul(a, ctm);
+      else if (fn===OPS.paintImageXObject || fn===OPS.paintInlineImageXObject){
+        const w = Math.hypot(ctm[0],ctm[1]), h = Math.hypot(ctm[2],ctm[3]);
+        if (w<40 || h<40) continue;
+        imgs.push({ref:a[0], inline: fn===OPS.paintInlineImageXObject, yTop: ctm[5]+Math.max(0,ctm[3])});
+      }
+    }
+    const pageImgs = [];
+    for (const im of imgs){
+      if (imgCount>=80) break;
+      setStatus(`Lecture du PDF… page ${p}/${pdf.numPages} (images)`);
+      const obj = im.inline ? im.ref : await getObj(page, im.ref);
+      const url = imageToDataURL(obj);
+      if (url){ pageImgs.push({yTop:im.yTop, src:url}); imgCount++; }
+    }
+    pageImgs.sort((a,b)=>b.yTop-a.yTop);
+
+    // Texte regroupé en lignes
+    const content = await page.getTextContent();
+    const boldCache = {};
+    const isBold = fn=>{
+      if (fn in boldCache) return boldCache[fn];
+      let r=false;
+      try{ if (page.commonObjs.has(fn)) r = /bold|black|heavy|demi/i.test(page.commonObjs.get(fn).name||''); }catch(e){}
+      return boldCache[fn]=r;
+    };
+    const lines = []; let cur = null;
+    content.items.forEach(it=>{
+      if (typeof it.str!=='string') return;
+      const size = Math.abs(it.transform[3]) || it.height || 10;
+      const x = it.transform[4], y = it.transform[5];
+      if (!it.str.trim() && !cur) return;
+      const len = it.str.trim().length;
+      if (cur && Math.abs(cur.y-y) < size*0.4 && (x-cur.xEnd) > -size*0.5){
+        const gap = x - cur.xEnd;
+        if (gap>size*0.15 && !cur.text.endsWith(' ') && !it.str.startsWith(' ')) cur.text += ' ';
+        cur.text += it.str;
+        cur.xEnd = Math.max(cur.xEnd, x+it.width);
+        cur.size = Math.max(cur.size, size);
+        cur.len += len; if (isBold(it.fontName)) cur.bold += len;
+      } else {
+        cur = {y, x, xEnd:x+it.width, size, text:it.str, len, bold: isBold(it.fontName)?len:0};
+        lines.push(cur);
+      }
+    });
+    lines.forEach(l=>{
+      const k = Math.round(l.size);
+      sizeCount[k] = (sizeCount[k]||0) + l.text.trim().length;
+    });
+    pages.push({W, lines, imgs:pageImgs});
+  }
+
+  /* Taille de texte "normale" = valeur la plus fréquente */
+  let med = 12, best = -1;
+  for (const k in sizeCount) if (sizeCount[k]>best){ best=sizeCount[k]; med=+k; }
+
+  /* Passe 2 : construire les blocs */
+  const out = [];
+  const BUL = /^[•▪●◦‣·]\s*/;
+  pages.forEach((pg, pi)=>{
+    const L = pg.lines.filter(l=>l.text.trim());
+    const minX = Math.min(...L.map(l=>l.x), 1e9), maxX = Math.max(...L.map(l=>l.xEnd), 0);
+    const imgs = pg.imgs.slice();
+    let para = null, last = null;
+
+    const flush = ()=>{
+      if (!para) return;
+      let align;
+      if (para.lines===1 && para.t!=='li'){
+        const cx = (para.x+para.xEnd)/2;
+        if (Math.abs(cx-pg.W/2) < pg.W*0.03 && (para.xEnd-para.x) < pg.W*0.7) align='center';
+      }
+      out.push({t:para.t, runs:[{t:para.text, b: para.allBold && para.t==='p'}], align});
+      para = null;
+    };
+
+    L.forEach(l=>{
+      while (imgs.length && imgs[0].yTop >= l.y){ flush(); out.push({t:'img', src:imgs.shift().src}); last=null; }
+      let t = l.text.trim();
+      const lineBold = l.len>0 && l.bold/l.len > 0.8;
+      const bigHead = l.size > med*1.15;
+      const boldHead = lineBold && t.length < 100;
+      const isHead = bigHead || boldHead;
+      const lvl = l.size>med*1.6 ? 'h1' : l.size>med*1.3 ? 'h2' : 'h3';
+      const isBul = BUL.test(t);
+      if (isBul) t = t.replace(BUL,'');
+      const gap = last ? last.y - l.y : 0;
+      const lastShort = last && (last.xEnd-minX) < 0.75*(maxX-minX) && /[.!?:]$/.test(last.text.trim());
+      const type = isHead ? lvl : (isBul ? 'li' : 'p');
+      const newPara = !para || isBul || type!==para.t || gap > l.size*1.7 || gap < -l.size || lastShort;
+      if (newPara){
+        flush();
+        para = {t:type, text:t, x:l.x, xEnd:l.xEnd, lines:1, allBold:lineBold};
+      } else {
+        if (para.text.endsWith('-') && /^[a-zàâéèêëîïôùûü]/.test(t)) para.text = para.text.slice(0,-1)+t;
+        else para.text += ' '+t;
+        para.xEnd = Math.max(para.xEnd, l.xEnd); para.lines++; para.allBold = para.allBold && lineBold;
+      }
+      last = l;
+    });
+    flush();
+    imgs.forEach(im=>out.push({t:'img', src:im.src}));
+    if (pi < pages.length-1) out.push({t:'hr'});
+  });
+  return out;
+}
+
+/* ---------- Extraction : autres fichiers ---------- */
+function textToBlocks(txt){
+  return txt.split(/\n\s*\n/).map(t=>blk('p', t));
+}
+async function docxToBlocks(buf){
+  const r = await mammoth.convertToHtml({arrayBuffer:buf}, {
+    convertImage: mammoth.images.imgElement(image =>
+      image.read('base64').then(b=>({src:`data:${image.contentType};base64,${b}`})))
+  });
+  return htmlToBlocks(r.value, null, false);
+}
+async function loadFile(f){
+  if (!f) return;
+  setStatus('Lecture du fichier…');
+  const name = f.name.toLowerCase();
+  try{
+    if (name.endsWith('.pdf')) setBlocks(await pdfToBlocks(await f.arrayBuffer()));
+    else if (name.endsWith('.docx')) setBlocks(await docxToBlocks(await f.arrayBuffer()));
+    else if (name.endsWith('.html')||name.endsWith('.htm')) setBlocks(htmlToBlocks(await f.text(), null, true));
+    else setBlocks(textToBlocks(await f.text()));
+  }catch(e){
+    console.error(e);
+    setStatus("Je n'ai pas réussi à lire ce fichier. ("+(e && e.message ? e.message : e)+")", true);
+  }
+}
+
+/* ---------- Boutons ---------- */
+$('#goUrl').onclick = loadUrl;
+$('#url').addEventListener('keydown', e=>{ if(e.key==='Enter') loadUrl(); });
+$('#file').addEventListener('change', e=>loadFile(e.target.files[0]));
+$('#fileBtn').addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); $('#file').click(); }});
+$('#goPaste').onclick = ()=>{ const t=$('#paste').value; if(t.trim()) setBlocks(textToBlocks(t)); };
+$('#pdf').onclick = ()=>{ if(!blocks.length) return setStatus("Il n'y a encore rien à enregistrer.", true); window.print(); };
+
+/* Lecture à voix haute */
+$('#speak').onclick = ()=>{
+  if(!blocks.length || !('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(blocks.map(blockText).filter(Boolean).join('. '));
+  u.lang='fr-FR'; u.rate=0.9;
+  speechSynthesis.speak(u);
+};
+$('#stop').onclick = ()=>{ if('speechSynthesis' in window) speechSynthesis.cancel(); };
+
+/* Règle de lecture */
+const ruler = $('#ruler');
+const moveRuler = y => { ruler.style.top = (y - ruler.offsetHeight/2)+'px'; };
+document.addEventListener('mousemove', e=>moveRuler(e.clientY));
+document.addEventListener('touchmove', e=>moveRuler(e.touches[0].clientY), {passive:true});
+
+/* ---------- Menu rétractable ---------- */
+function setMenu(open){
+  document.body.classList.toggle('menu-open', open);
+  $('#menuBtn').setAttribute('aria-expanded', open);
+  try { localStorage.setItem('lf_menu', open?'1':'0'); } catch(e){}
+}
+$('#menuBtn').onclick = ()=>setMenu(true);
+$('#menuClose').onclick = ()=>setMenu(false);
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') setMenu(false); });
+let savedMenu = null; try { savedMenu = localStorage.getItem('lf_menu'); } catch(e){}
+setMenu(savedMenu===null ? innerWidth>=1000 : savedMenu==='1');
+
+/* ---------- Vérification de la police ---------- */
+function checkFont(){
+  const w = $('#fontwarn');
+  if (!/OpenDyslexic/.test(S.font)){ w.style.display='none'; return; }
+  document.fonts.load("24px OpenDyslexic","Opendyslexic")
+    .then(f=>{ w.style.display = f.length ? 'none' : 'block'; })
+    .catch(()=>{ w.style.display='block'; });
+}
+$('#font').addEventListener('input', checkFont);
+
+applyStyle();
+checkFont();
+</script>
+</body>
+</html>
